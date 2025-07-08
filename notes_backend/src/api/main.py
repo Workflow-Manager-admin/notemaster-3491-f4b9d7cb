@@ -192,5 +192,4 @@ def delete_note(
     db.commit()
     return None
 
-# Dependency-injection fix for get_current_user
-app.dependency_overrides["db_dep"] = get_db
+

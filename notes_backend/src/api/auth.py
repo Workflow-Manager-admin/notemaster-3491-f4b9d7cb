@@ -4,7 +4,7 @@ from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from .db import User
+from .db import User, get_db
 import os
 
 SECRET_KEY = os.getenv("SECRET_KEY", "changeme-this-should-be-long-and-random")
@@ -28,7 +28,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     return encoded_jwt
 
 # PUBLIC_INTERFACE
-def get_current_user(db: Session = Depends("db_dep"), token: str = Depends(oauth2_scheme)):
+def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     """Return the logged-in user from JWT; raise 401 if not valid."""
     from .models import UserRead
     credentials_exception = HTTPException(
